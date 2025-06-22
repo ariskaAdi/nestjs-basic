@@ -7,10 +7,26 @@ import {
   Param,
   Query,
   Redirect,
+  Req,
+  Res,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Controller('api/users')
 export class UserController {
+  // set untuk mengatur cookie
+  @Get('/set-cookie')
+  setCookie(@Query('name') name: string, @Res() response: Response) {
+    response.cookie('name', name);
+    response.status(200).send('Cookie set');
+  }
+
+  //   untuk mendapat cookie
+  @Get('/get-cookie')
+  getCookie(@Req() request: Request): string {
+    return request.cookies['name'];
+  }
+
   // http method return json and status code responses
   @Get('/json')
   @Header('Content-Type', 'application/json')
